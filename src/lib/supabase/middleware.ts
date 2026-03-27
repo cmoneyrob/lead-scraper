@@ -41,6 +41,7 @@ export async function updateSession(
     "/search",
     "/signals",
     "/settings",
+    "/it-services",
   ];
 
   const isProtected = protectedPaths.some((path) =>

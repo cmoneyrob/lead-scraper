@@ -39,6 +39,7 @@ import {
   Menu,
   LogOut,
   ChevronRight,
+  Monitor,
 } from "lucide-react";
 
 interface NavItem {
@@ -50,6 +51,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Search", href: "/search", icon: Search },
+  { label: "IT Services", href: "/it-services", icon: Monitor },
   { label: "Leads", href: "/leads", icon: Users },
   { label: "Signals", href: "/signals", icon: Zap },
   { label: "Settings", href: "/settings", icon: Settings },
