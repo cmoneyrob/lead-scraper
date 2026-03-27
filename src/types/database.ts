@@ -26,6 +26,15 @@ export type SignalType =
 
 export type SearchJobStatus = "pending" | "running" | "completed" | "failed";
 
+export type ScrapeJobStatus =
+  | "pending"
+  | "running"
+  | "searching"
+  | "scraping"
+  | "scoring"
+  | "completed"
+  | "failed";
+
 export interface Database {
   public: {
     Tables: {
@@ -287,6 +296,66 @@ export interface Database {
         };
         Relationships: [];
       };
+      scrape_jobs: {
+        Row: {
+          id: string;
+          user_id: string;
+          signal_ids: string[];
+          scoring_profile_id: string | null;
+          status: ScrapeJobStatus;
+          query_generated: string | null;
+          location: string | null;
+          search_params: Record<string, unknown>;
+          results_found: number;
+          leads_created: number;
+          leads_scraped: number;
+          leads_qualified: number;
+          error_message: string | null;
+          log: Record<string, unknown>[];
+          started_at: string | null;
+          completed_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          signal_ids?: string[];
+          scoring_profile_id?: string | null;
+          status?: ScrapeJobStatus;
+          query_generated?: string | null;
+          location?: string | null;
+          search_params?: Record<string, unknown>;
+          results_found?: number;
+          leads_created?: number;
+          leads_scraped?: number;
+          leads_qualified?: number;
+          error_message?: string | null;
+          log?: Record<string, unknown>[];
+          started_at?: string | null;
+          completed_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          signal_ids?: string[];
+          scoring_profile_id?: string | null;
+          status?: ScrapeJobStatus;
+          query_generated?: string | null;
+          location?: string | null;
+          search_params?: Record<string, unknown>;
+          results_found?: number;
+          leads_created?: number;
+          leads_scraped?: number;
+          leads_qualified?: number;
+          error_message?: string | null;
+          log?: Record<string, unknown>[];
+          started_at?: string | null;
+          completed_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       search_jobs: {
         Row: {
           id: string;
@@ -343,6 +412,7 @@ export interface Database {
       pipeline_stage: PipelineStage;
       signal_type: SignalType;
       search_job_status: SearchJobStatus;
+      scrape_job_status: ScrapeJobStatus;
     };
     CompositeTypes: Record<string, never>;
   };

@@ -8,6 +8,7 @@ const protectedPaths = [
   "/signals",
   "/settings",
   "/it-services",
+  "/scrapes",
 ];
 
 export async function updateSession(

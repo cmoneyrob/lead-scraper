@@ -1,3 +1,10 @@
+export interface ExtractedContacts {
+  emails: string[];
+  phones: string[];
+  addresses: string[];
+  contactPageUrl: string | null;
+}
+
 export interface EnrichmentData {
   content: string;
   title: string;
@@ -10,6 +17,7 @@ export interface EnrichmentData {
   linkCount: number;
   headers: Record<string, string>;
   domainAge?: number;
+  contacts?: ExtractedContacts;
   fetchedAt: string;
   statusCode: number;
 }

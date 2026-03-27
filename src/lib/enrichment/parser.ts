@@ -2,6 +2,7 @@ import * as cheerio from "cheerio";
 import { EnrichmentData } from "./types";
 import { detectTechnologies } from "./tech-detector";
 import { extractSocialLinks } from "./social-extractor";
+import { extractContacts } from "./contact-extractor";
 
 export function parseHtml(
   html: string,
@@ -17,6 +18,7 @@ export function parseHtml(
   const imageCount = $("img").length;
   const technologies = detectTechnologies(html, headers);
   const socialLinks = extractSocialLinks(html, links);
+  const contacts = extractContacts(html, links);
 
   $("script, style, nav, header, footer, noscript, iframe, svg").remove();
 
@@ -34,6 +36,7 @@ export function parseHtml(
     imageCount,
     linkCount: links.length,
     headers,
+    contacts,
     fetchedAt: new Date().toISOString(),
     statusCode,
   };
