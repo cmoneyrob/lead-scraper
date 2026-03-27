@@ -40,23 +40,28 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-    if (error) {
-      toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        setLoading(false);
+        return;
+      }
+
+      toast.success("Check your email for a confirmation link");
+      router.push("/auth/login");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to connect to authentication service");
       setLoading(false);
-      return;
     }
-
-    toast.success("Check your email for a confirmation link");
-    router.push("/auth/login");
   }
 
   return (
