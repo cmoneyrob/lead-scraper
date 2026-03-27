@@ -1,16 +1,44 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const protectedPaths = [
+  "/dashboard",
+  "/leads",
+  "/search",
+  "/signals",
+  "/settings",
+  "/it-services",
+];
+
 export async function updateSession(
   request: NextRequest
 ): Promise<NextResponse> {
+  const pathname = request.nextUrl.pathname;
+  const isProtected = protectedPaths.some((path) =>
+    pathname.startsWith(path)
+  );
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // If Supabase env vars are not configured, skip auth entirely.
+  // Protected routes redirect to login; public routes pass through.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    if (isProtected) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/login";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -34,19 +62,6 @@ export async function updateSession(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const protectedPaths = [
-    "/dashboard",
-    "/leads",
-    "/search",
-    "/signals",
-    "/settings",
-    "/it-services",
-  ];
-
-  const isProtected = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
 
   if (!user && isProtected) {
     const url = request.nextUrl.clone();
