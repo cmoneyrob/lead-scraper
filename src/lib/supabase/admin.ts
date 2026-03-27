@@ -7,7 +7,7 @@ export function createAdminClient(): ReturnType<typeof createClient<Database>> {
 
   if (!supabaseUrl || !serviceRoleKey) {
     throw new Error(
-      "Missing Supabase environment variables. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env.local file."
+      "Missing Supabase environment variables. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment and rebuild."
     );
   }
 
